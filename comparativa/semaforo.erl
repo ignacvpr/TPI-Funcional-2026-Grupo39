@@ -11,3 +11,11 @@
 % en erlang una funcion puede tener multiples clausulas
 % cada clausula se activa segun los parametros que recibe
 % esto reemplaza el uso de cond/if que se usa en lisp
+
+%===CLAUSULAS====
+% una clausula es cada "version" de la funcion
+% en erlang podes escribir la misma funcion varias veces con distintos parametros
+% cada una de esas es una clausula
+% cuando llamas a la funcion erlang prueba cada clausula de arriba hacia abajo
+% y ejecuta la primera que coincida con los parametros que le pasaste
+% si ninguna coincide usa la ultima que es el caso por defecto
