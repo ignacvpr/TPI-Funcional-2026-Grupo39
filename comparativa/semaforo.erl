@@ -7,3 +7,7 @@
 % transicion/2 significa que la funcion transicion recibe 2 parametros
 -export([transicion/2]).
 
+% NOTAS SOBRE PATTERN MATCHING EN ERLANG
+% en erlang una funcion puede tener multiples clausulas
+% cada clausula se activa segun los parametros que recibe
+% esto reemplaza el uso de cond/if que se usa en lisp
