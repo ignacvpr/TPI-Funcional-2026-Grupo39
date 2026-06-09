@@ -31,7 +31,6 @@
   (member color '(en-rojo en-amarillo en-verde)))
 
 
-;; ============================================================
 ;; FUNCIÓN: log-cambio-estado
 ;; NATURALEZA: Impura (efecto secundario: escribe en terminal)
 ;; ESTRATEGIA: Función Simple (no recursiva, no orden superior)
