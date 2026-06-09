@@ -20,6 +20,27 @@
      (list color-actual 'accion-por-defecto))))
 
 
+
+   ;; ========================================================
+;; FUNCIÓN: timer
+;; NATURALEZA: 
+;; ESTRATEGIA: 
+;; IMPACTO: No destructiva
+;; ========================================================
+(defun timer (tiempo-unix)
+  (let ((posicion (mod tiempo-unix 216)))
+    (cond
+      ((< posicion 90)  'en-rojo)
+      ((< posicion 96)  'en-amarillo)
+      (t  'en-verde)
+      )
+    )
+  )
+
+
+
+
+
 ; FUNCIÓN: color-valido-p
 ;; NATURALEZA: Pura (sin efectos secundarios, mismo input = mismo output)
 ;; ESTRATEGIA: Función Predicado
