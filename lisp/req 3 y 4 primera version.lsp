@@ -11,14 +11,21 @@
   (let ((fecha (local-time:format-timestring nil (local-time:now))))
     (format t "~%Tiempo [~A]: la luz ha cambiado de ~A a ~A" fecha luz1 luz2)))
 
-(defun duracion_ciclo() ;funcion para pruebas, deberia reemplazarse por el requerimiento 2
+;; ========================================================
+;; FUNCIÓN: duracion_ciclo
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Función Simple
+;; IMPACTO: No Destructiva
+;; ========================================================
+
+(defun duracion_ciclo ()
   (+ 90 6 120))
 
 ;; ========================================================
 ;; FUNCIÓN: recomendacion_ciclo
-;; NATURALEZA:
-;; ESTRATEGIA: 
-;; IMPACTO:
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Función Condicional (uso de cond)
+;; IMPACTO: No Destructiva
 ;; ========================================================
 
 (defun recomendacion_ciclo (tiempo_total) ;tiempo_total = duracion_ciclo en la ejecucion
