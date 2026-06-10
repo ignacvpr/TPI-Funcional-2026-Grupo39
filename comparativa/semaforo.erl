@@ -1,21 +1,28 @@
-%explorando sintaxis basica de de erlang
+% ========================================================
+% FUNCIÓN: transicion
+% NATURALEZA: Pura
+% ESTRATEGIA: Pattern Matching
+% IMPACTO: No destructiva
+% ========================================================
 
-% -module indica el nombre del modulo, debe coincidir con el nombre del archivo
+% mirando la funcion en lisp, cada caso del cond
+% se convierte en una clausula separada en erlang
+
 -module(semaforo).
-
-% -export indica que funciones están disponibles para usar desde afuera
-% transicion/2 significa que la funcion transicion recibe 2 parametros
 -export([transicion/2]).
 
-% NOTAS SOBRE PATTERN MATCHING EN ERLANG
-% en erlang una funcion puede tener multiples clausulas
-% cada clausula se activa segun los parametros que recibe
-% esto reemplaza el uso de cond/if que se usa en lisp
+% caso en-rojo a verde
+transicion(en_rojo, verde) ->
+    {en_rojo, "cambiar-a-verde"};
 
-%===CLAUSULAS====
-% una clausula es cada "version" de la funcion
-% en erlang podes escribir la misma funcion varias veces con distintos parametros
-% cada una de esas es una clausula
-% cuando llamas a la funcion erlang prueba cada clausula de arriba hacia abajo
-% y ejecuta la primera que coincida con los parametros que le pasaste
-% si ninguna coincide usa la ultima que es el caso por defecto
+% caso en-verde a amarillo
+transicion(en_verde, amarillo) ->
+    {en_verde, "cambiar-a-amarillo"};
+
+% caso en-amarillo a rojo
+transicion(en_amarillo, rojo) ->
+    {en_amarillo, "cambiar-a-rojo"};
+
+% caso por defecto - transicion invalida
+transicion(ColorActual, _) ->
+    {ColorActual, accion_por_defecto}.
