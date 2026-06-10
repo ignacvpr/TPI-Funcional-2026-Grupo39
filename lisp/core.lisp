@@ -73,3 +73,18 @@
                     :if-exists :append
                     :if-does-not-exist :create)
       (format stream "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo))))
+;; FUNCIÓN: log-historial
+;; NATURALEZA: Impura (efecto secundario: escribe en terminal)
+;; ESTRATEGIA: Función de Orden Superior (utiliza mapcar)
+;; IMPACTO: No Destructiva
+;; ============================================================
+(defun log-historial (registros)
+  "Registra en terminal una lista completa de cambios de estado.
+   Cada registro tiene el formato: (epoch color-anterior color-nuevo)
+   Utiliza mapcar para aplicar log-cambio-estado a cada registro."
+  (mapcar (lambda (registro)
+            (log-cambio-estado
+              (first registro)
+              (second registro)
+              (third registro)))
+          registros))
