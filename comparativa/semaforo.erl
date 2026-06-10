@@ -26,3 +26,18 @@ transicion(en_amarillo, rojo) ->
 % caso por defecto - transicion invalida
 transicion(ColorActual, _) ->
     {ColorActual, accion_por_defecto}.
+
+% ========================================================
+% FUNCIÓN: timer
+% NATURALEZA: Pura
+% ESTRATEGIA: Pattern Matching con guardas
+% IMPACTO: No destructiva
+% ========================================================
+
+timer(TiempoUnix) ->
+    Posicion = TiempoUnix rem 216,
+    if
+        Posicion < 90 -> en_rojo;
+        Posicion < 96 -> en_amarillo;
+        true -> en_verde
+    end.
