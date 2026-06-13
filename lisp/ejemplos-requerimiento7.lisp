@@ -39,3 +39,40 @@
 (recomendacion_ciclo -5)
 ;; Resultado esperado:
 ;; "El ciclo es muy corto"
+ ;; ========================================================
+;; REQUERIMIENTO 1 - transicion
+;; ========================================================
+
+;; Caso normal
+(transicion 'en-rojo 'verde)
+;; Resultado esperado:
+;; (EN-ROJO "cambiar-a-verde")
+
+;; Caso normal
+(transicion 'en-verde 'amarillo)
+;; Resultado esperado:
+;; (EN-VERDE "cambiar-a-amarillo")
+
+;; Caso inválido
+(transicion 'en-rojo 'amarillo)
+;; Resultado esperado:
+;; (EN-ROJO ACCION-POR-DEFECTO)
+
+;; ========================================================
+;; REQUERIMIENTO 2 - timer
+;; ========================================================
+
+;; Caso normal
+(timer 0)
+;; Resultado esperado:
+;; EN-ROJO
+
+;; Cambio de estado
+(timer 90)
+;; Resultado esperado:
+;; EN-AMARILLO
+
+;; Caso normal
+(timer 100)
+;; Resultado esperado:
+;; EN-VERDE
