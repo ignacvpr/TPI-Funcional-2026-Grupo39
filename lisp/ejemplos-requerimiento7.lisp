@@ -91,6 +91,9 @@
 ;; EXTENSIÓN 1 - amarillo-intermitente
 ;; ========================================================
 
+;; NOTA: Los siguientes ejemplos corresponden a la versión extendida
+;; del timer definida en amarillo-intermitente.lisp.
+
 ;; Caso normal
 (timer 90)
 ;; Resultado esperado:
