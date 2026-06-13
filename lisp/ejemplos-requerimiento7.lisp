@@ -76,3 +76,27 @@
 (timer 100)
 ;; Resultado esperado:
 ;; EN-VERDE
+
+;; ========================================================
+;; REQUERIMIENTO 3 - log-cambio-estado
+;; ========================================================
+
+;; Caso normal
+(log-cambio-estado 'en-rojo 'en-verde)
+
+;; Caso normal
+(log-cambio-estado 'en-verde 'en-amarillo)
+
+;; ========================================================
+;; EXTENSIÓN 1 - amarillo-intermitente
+;; ========================================================
+
+;; Caso normal
+(timer 90)
+;; Resultado esperado:
+;; EN-AMARILLO-INTERMITENTE
+
+;; Caso normal
+(timer 220)
+;; Resultado esperado:
+;; EN-AMARILLO-INTERMITENTE
