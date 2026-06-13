@@ -68,46 +68,88 @@
 
 
 
-; FUNCIÓN: color-valido-p
-;; NATURALEZA: Pura (sin efectos secundarios, mismo input = mismo output)
-;; ESTRATEGIA: Función Predicado
+;; FUNCIÓN: calcular-porcentaje
+;; NATURALEZA: Pura (mismo input siempre devuelve mismo output)
+;; ESTRATEGIA: Función Simple (operación aritmética directa)
 ;; IMPACTO: No Destructiva
 ;; ============================================================
-(defun color-valido-p (color)
-  "Verifica si el color dado es un estado válido del semáforo.
-   Colores válidos: en-rojo, en-amarillo, en-verde"
-  (member color '(en-rojo en-amarillo en-verde)))
+(defun calcular-porcentaje (tiempo-color duracion-total)
+  "Calcula el porcentaje de tiempo que ocupa un color
+   dentro de la duración total de un ciclo."
+  (* (/ (* tiempo-color 1.0) duracion-total) 100))
 
 
-;; ========================================================
-;; FUNCIÓN: log-cambio-estado
-;; NATURALEZA: Impura (escribe en pantalla y en archivo)
-;; ESTRATEGIA: Funcion Simple
-;; IMPACTO: No destructiva
-;; ========================================================
-;; se modifico esta funcion para usar local-time en lugar de epoch
-;; ahora obtiene la fecha automaticamente con local-time:now
-;; y ademas guarda el registro en un archivo de texto
-(ql:quickload :local-time)
+;; ============================================================
+;; FUNCIÓN: duracion-ciclo-total
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Función Simple
+;; IMPACTO: No Destructiva
+;; ============================================================
+(defun duracion-ciclo-total (tiempo-rojo tiempo-amarillo tiempo-verde)
+  "Calcula la duración total de un ciclo semafórico completo."
+  (+ tiempo-rojo tiempo-amarillo tiempo-verde))
 
-(defun log-cambio-estado (color-anterior color-nuevo)
-  (let ((fecha (local-time:format-timestring nil (local-time:now))))
-    ;; imprime en pantalla
-    (format t "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo)
-    ;; guarda en archivo
-    (with-open-file (stream "informe-ejecucion-semaforo.txt"
-                    :direction :output
-                    :if-exists :append
-                    :if-does-not-exist :create)
-      (format stream "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo))))
 
-;; FUNCIÓN: log-historial
-;; NATURALEZA: Impura (efecto secundario: escribe en terminal y en archivo)
+;; ============================================================
+;; FUNCIÓN: informe-distribucion
+;; NATURALEZA: Pura
 ;; ESTRATEGIA: Función de Orden Superior (utiliza mapcar)
 ;; IMPACTO: No Destructiva
-(defun log-historial (registros)
-  (mapcar (lambda (registro)
-            (log-cambio-estado
-              (first registro)
-              (second registro)))
-          registros))
+;; ============================================================
+(defun informe-distribucion (tiempo-rojo tiempo-amarillo tiempo-verde)
+  "Calcula la distribución porcentual de cada color en 1 hora.
+   Devuelve una lista de sublistas: (color porcentaje)
+   Los tiempos se expresan en segundos."
+  (let* (
+    ; calculamos la duración total del ciclo
+    (duracion-total (duracion-ciclo-total
+                      tiempo-rojo
+                      tiempo-amarillo
+                      tiempo-verde))
+
+    ; creamos la lista de colores con sus tiempos
+    (colores-tiempos (list
+                       (list 'rojo     tiempo-rojo)
+                       (list 'amarillo tiempo-amarillo)
+                       (list 'verde    tiempo-verde)))
+  )
+    ; usamos mapcar para calcular el porcentaje de cada color
+    (mapcar (lambda (par)
+              (list (car par)
+                    (calcular-porcentaje (cadr par) duracion-total)))
+            colores-tiempos)))
+
+
+;; ============================================================
+;; FUNCIÓN: distribucion-actual
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Función Simple (wrapper con valores actuales)
+;; IMPACTO: No Destructiva
+;; ============================================================
+(defun distribucion-actual ()
+  "Calcula la distribución porcentual usando las reglas
+   de negocio actuales: Rojo=90s, Amarillo=6s, Verde=120s"
+  (informe-distribucion 90 6 120))
+
+
+;; ============================================================
+;; FUNCIÓN: imprimir-distribucion
+;; NATURALEZA: Impura (efecto secundario: escribe en terminal)
+;; ESTRATEGIA: Función de Orden Superior (utiliza mapcar)
+;; IMPACTO: No Destructiva
+;; ============================================================
+(defun imprimir-distribucion (tiempo-rojo tiempo-amarillo tiempo-verde)
+  "Muestra en terminal el informe de distribución temporal
+   de forma legible para el operador."
+  (let* ((distribucion (informe-distribucion
+                          tiempo-rojo
+                          tiempo-amarillo
+                          tiempo-verde)))
+    (format t "=== INFORME DE DISTRIBUCIÓN TEMPORAL (1 hora) ===~%")
+    (mapcar (lambda (par)
+              (format t "Color ~A: ~,2F%~%"
+                      (car par)
+                      (cadr par)))
+            distribucion)
+    (format t "================================================~%")
+    distribucion))
