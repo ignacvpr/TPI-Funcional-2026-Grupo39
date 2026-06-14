@@ -30,5 +30,5 @@
       ((< posicion 90) 'en-rojo)
       ((< posicion 93) 'en-amarillo-intermitente)
       ((< posicion 213) 'en-verde)
-      ((< posicion 219) 'en-amarillo)
-      (t 'en-amarillo-intermitente))))
+      ((< posicion 216) 'en-amarillo-intermitente)
+      (t 'en-amarillo))))
