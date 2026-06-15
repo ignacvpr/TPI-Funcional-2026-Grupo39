@@ -200,6 +200,7 @@
             distribucion)
     (format t "================================================~%")
     distribucion))
+
 ;; ========================================================
 ;; FUNCIÓN: sistema_auditoria
 ;; NATURALEZA: Impura (Efecto secundario: realiza operaciones de E/S en terminal)
@@ -211,7 +212,12 @@
     (format t "~%Tiempo [~A]: la luz ha cambiado de ~A a ~A" fecha luz1 luz2)))
 
 
-;funcion a eliminar, solo se uso para comprobar funcionamiento
+;; ========================================================
+;; FUNCIÓN: duracion_ciclo
+;; NATURALEZA: Pura (mismo input siempre devuelve mismo output)
+;; ESTRATEGIA: Función Simple (operación aritmética directa)
+;; IMPACTO: No Destructiva
+;; ========================================================
 (defun duracion_ciclo () 
   (+ 90 6 120))
 
