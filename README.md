@@ -2,12 +2,13 @@
 ## Sistema de Semáforos Inteligentes y Análisis Comparativo de Paradigmas
 **Paradigmas y Lenguajes de Programación — 2026 — UNNE**
 
-## Integrantes                     · Usuarios github:
-- Pereira Ignacio Valentín            ·ignacvpr
-- Juliana Turbay                      ·juliturbay
-- Miranda Francisco Martín            ·franDeveloper1
-- Perez Rollheiser Cruz Benjamín      ·cruzperez05
-- Pujol Facundo Emiliano              ·facundoemilianopujol02-maker
+| Integrante | Usuario GitHub |
+|---|---|
+| Pereira Ignacio Valentín | [@ignacvpr](https://github.com/ignacvpr) |
+| Juliana Turbay | [@juliturbay](https://github.com/juliturbay) |
+| Miranda Francisco Martín | [@franDeveloper1](https://github.com/franDeveloper1) |
+| Perez Rollheiser Cruz Benjamín | [@cruzperez05](https://github.com/cruzperez05) |
+| Pujol Facundo Emiliano | [@facundoemilianopujol02-maker](https://github.com/facundoemilianopujol02-maker) |
 
 ## Video de defensa
 [Ver en YouTube](link acá)
