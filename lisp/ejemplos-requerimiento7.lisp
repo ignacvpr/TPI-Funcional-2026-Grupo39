@@ -102,4 +102,4 @@
 ;; Caso normal
 (timer 220)
 ;; Resultado esperado:
-;; EN-AMARILLO-INTERMITENTE
+;; EN-AMARILLO
