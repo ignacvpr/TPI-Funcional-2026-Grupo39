@@ -7,7 +7,7 @@
 | Pereira Ignacio Valentín | [@ignacvpr](https://github.com/ignacvpr) |
 | Juliana Turbay | [@juliturbay](https://github.com/juliturbay) |
 | Miranda Francisco Martín | [@franDeveloper1](https://github.com/franDeveloper1) |
-| Perez Rollheiser Cruz Benjamín | [@cruzperez05](https://github.com/cruzperez05) |
+| Pérez Rollheiser Cruz Benjamín | [@cruzperez05](https://github.com/cruzperez05) |
 | Pujol Facundo Emiliano | [@facundoemilianopujol02-maker](https://github.com/facundoemilianopujol02-maker) |
 
 ## Video de defensa
