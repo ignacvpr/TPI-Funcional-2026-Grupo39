@@ -67,58 +67,54 @@
 
 
 
-
-;; FUNCIÓN: calcular-porcentaje
-;; NATURALEZA: Pura (mismo input siempre devuelve mismo output)
-;; ESTRATEGIA: Función Simple (operación aritmética directa)
-;; IMPACTO: No Destructiva
-;; ============================================================
-(defun calcular-porcentaje (tiempo-color duracion-total)
-  "Calcula el porcentaje de tiempo que ocupa un color
-   dentro de la duración total de un ciclo."
-  (* (/ (* tiempo-color 1.0) duracion-total) 100))
-
-
-;; ============================================================
-;; FUNCIÓN: duracion-ciclo-total
+;; FUNCIÓN: minutos-a-segundos
 ;; NATURALEZA: Pura
 ;; ESTRATEGIA: Función Simple
 ;; IMPACTO: No Destructiva
 ;; ============================================================
-(defun duracion-ciclo-total (tiempo-rojo tiempo-amarillo tiempo-verde)
-  "Calcula la duración total de un ciclo semafórico completo."
-  (+ tiempo-rojo tiempo-amarillo tiempo-verde))
+(defun minutos-a-segundos (minutos)
+  "Convierte minutos a segundos.
+   Entrada: cantidad de minutos (número positivo)
+   Salida: equivalente en segundos"
+  (* minutos 60))
+
+
+
 
 
 ;; ============================================================
-;; FUNCIÓN: informe-distribucion
-;; NATURALEZA: Pura
-;; ESTRATEGIA: Función de Orden Superior (utiliza mapcar)
+;; FUNCIÓN: ciclos-por-tiempo
+;; NATURALEZA: Pura (mismo input siempre devuelve mismo output)
+;; ESTRATEGIA: Función Simple (operación aritmética directa)
 ;; IMPACTO: No Destructiva
 ;; ============================================================
-(defun informe-distribucion (tiempo-rojo tiempo-amarillo tiempo-verde)
-  "Calcula la distribución porcentual de cada color en 1 hora.
-   Devuelve una lista de sublistas: (color porcentaje)
-   Los tiempos se expresan en segundos."
-  (let* (
-    ; calculamos la duración total del ciclo
-    (duracion-total (duracion-ciclo-total
-                      tiempo-rojo
-                      tiempo-amarillo
-                      tiempo-verde))
+(defun ciclos-por-tiempo (duracion-minutos)
+  "Calcula cuántos ciclos semafóricos completos entran
+   en una cantidad de minutos dada.
+   Entrada: duración en minutos (número positivo)
+   Salida: número de ciclos completos (entero)"
+  (cond
+    ; validación: la duración debe ser positiva
+    ((not (and (numberp duracion-minutos)
+               (> duracion-minutos 0)))
+     (format t "ERROR: La duración debe ser un número positivo~%")
+     nil)
 
-    ; creamos la lista de colores con sus tiempos
-    (colores-tiempos (list
-                       (list 'rojo     tiempo-rojo)
-                       (list 'amarillo tiempo-amarillo)
-                       (list 'verde    tiempo-verde)))
-  )
-    ; usamos mapcar para calcular el porcentaje de cada color
-    (mapcar (lambda (par)
-              (list (car par)
-                    (calcular-porcentaje (cadr par) duracion-total)))
-            colores-tiempos)))
+    ; caso válido: calculamos los ciclos
+    (t
+     (let* (
+       ; convertimos minutos a segundos
+       (segundos-totales   (minutos-a-segundos duracion-minutos))
 
+       ; duración de un ciclo completo con valores actuales
+       (duracion-ciclo     (+ 90 6 120))
+
+       ; dividimos y redondeamos hacia abajo
+       (ciclos-completos   (floor (/ segundos-totales duracion-ciclo)))
+     )
+       ciclos-completos))))
+
+;; ============================================================
 ;; FUNCIÓN: calcular-porcentaje
 ;; NATURALEZA: Pura (mismo input siempre devuelve mismo output)
 ;; ESTRATEGIA: Función Simple (operación aritmética directa)
@@ -204,40 +200,6 @@
             distribucion)
     (format t "================================================~%")
     distribucion))
-;; ============================================================
-;; FUNCIÓN: distribucion-actual
-;; NATURALEZA: Pura
-;; ESTRATEGIA: Función Simple (wrapper con valores actuales)
-;; IMPACTO: No Destructiva
-;; ============================================================
-(defun distribucion-actual ()
-  "Calcula la distribución porcentual usando las reglas
-   de negocio actuales: Rojo=90s, Amarillo=6s, Verde=120s"
-  (informe-distribucion 90 6 120))
-
-
-;; ============================================================
-;; FUNCIÓN: imprimir-distribucion
-;; NATURALEZA: Impura (efecto secundario: escribe en terminal)
-;; ESTRATEGIA: Función de Orden Superior (utiliza mapcar)
-;; IMPACTO: No Destructiva
-;; ============================================================
-(defun imprimir-distribucion (tiempo-rojo tiempo-amarillo tiempo-verde)
-  "Muestra en terminal el informe de distribución temporal
-   de forma legible para el operador."
-  (let* ((distribucion (informe-distribucion
-                          tiempo-rojo
-                          tiempo-amarillo
-                          tiempo-verde)))
-    (format t "=== INFORME DE DISTRIBUCIÓN TEMPORAL (1 hora) ===~%")
-    (mapcar (lambda (par)
-              (format t "Color ~A: ~,2F%~%"
-                      (car par)
-                      (cadr par)))
-            distribucion)
-    (format t "================================================~%")
-    distribucion))
-
 ;; ========================================================
 ;; FUNCIÓN: sistema_auditoria
 ;; NATURALEZA: Impura (Efecto secundario: realiza operaciones de E/S en terminal)
