@@ -37,6 +37,21 @@
 [ ] Generación completa por IA
 
 
-- Integrante 3: [Nombre] - GitHub: [usuario]
+- Integrante 3: Pujol Facundo Emiliano - GitHub: facundoemilianopujol02-maker
+
+1. Código en Common Lisp (Fase 1 y 2)
+[] Desarrollo 100% Humano
+[x] Asistencia de IA (Co-piloto)
+[ ] Generación Completa por IA
+
+2. Código del Lenguaje Asignado (Fase 3)
+[ ] Desarrollo 100% Humano
+[x] Asistencia de IA
+[ ] Generación Completa por IA
+
+3. Redacción del Informe y Respuestas Teóricas
+[ ] Autoría Propia
+[x] Redacción Asistida / Generada
+[ ] Generación completa por IA
 - Integrante 4: [Nombre] - GitHub: [usuario]
 - Integrante 5: [Nombre] - GitHub: [usuario]
