@@ -1,3 +1,6 @@
+<img width="537" height="388" alt="image" src="https://github.com/user-attachments/assets/9e264933-c689-4412-9bcc-32d76d962d8b" />
+
+
 # TPI-Funcional-2026-Grupo39
 ## Sistema de Semáforos Inteligentes y Análisis Comparativo de Paradigmas
 **Paradigmas y Lenguajes de Programación — 2026 — UNNE**
