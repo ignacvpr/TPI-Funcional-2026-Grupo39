@@ -32,9 +32,6 @@
      (list color-actual 'accion-por-defecto))))
 
 
-
-
-
 ;; ========================================================
 ;; FUNCIÓN: timer
 ;; NATURALEZA: Pura — mismo timestamp siempre devuelve
@@ -65,8 +62,6 @@
   )
 
 
-
-
 ;; FUNCIÓN: minutos-a-segundos
 ;; NATURALEZA: Pura
 ;; ESTRATEGIA: Función Simple
@@ -77,8 +72,6 @@
    Entrada: cantidad de minutos (número positivo)
    Salida: equivalente en segundos"
   (* minutos 60))
-
-
 
 
 
@@ -233,3 +226,149 @@
     ((< tiempo_total 35) "El ciclo es muy corto")
     ((and (>= tiempo_total 35) (<= tiempo_total 150)) "Ciclo perfecto")
     ((> tiempo_total 150) "Ciclo demasiado largo")))
+
+
+;; ========================================================
+;; EXTENSIÓN 1: INTERMITENCIA DE SEGURIDAD
+;; ========================================================
+;;
+;; Implementación de la extensión de intermitencia.
+;; No reemplaza la implementación original utilizada en los
+;; requerimientos 1 al 6.
+;;
+;; Se conserva comentada para documentación de la extensión.
+;;
+;; ========================================================
+
+#|
+;; ========================================================
+;; FUNCIÓN: color-valido-p
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Función Predicado
+;; IMPACTO: No Destructiva
+;; ========================================================
+
+(defun color-valido-p (color)
+  (member color
+          '(en-rojo
+            en-amarillo
+            en-verde
+            en-amarillo-intermitente)))
+
+
+(defun timer (tiempo-unix)
+  (let ((posicion (mod tiempo-unix 222)))
+    (cond
+      ((< posicion 90) 'en-rojo)
+      ((< posicion 93) 'en-amarillo-intermitente)
+      ((< posicion 213) 'en-verde)
+      ((< posicion 216) 'en-amarillo-intermitente)
+      (t 'en-amarillo))))
+|#
+
+;; ========================================================
+;; REQUERIMIENTO 7 - EJEMPLOS DE USO
+;; Sistema de Semáforos Inteligentes
+;; ========================================================
+;; ========================================================
+;; FUNCIÓN: duracion_ciclo
+;; ========================================================
+;; Caso normal
+(duracion_ciclo)
+;; Resultado esperado: 216
+;; ========================================================
+;; FUNCIÓN: recomendacion_ciclo
+;; ========================================================
+;; Caso normal
+(recomendacion_ciclo (duracion_ciclo))
+;; Resultado esperado:
+;; "Ciclo demasiado largo"
+;; Camino alternativo
+(recomendacion_ciclo 100)
+;; Resultado esperado:
+;; "Ciclo perfecto"
+
+;; Camino alternativo
+(recomendacion_ciclo 20)
+;; Resultado esperado:
+;; "El ciclo es muy corto"
+
+;; Caso límite inferior
+(recomendacion_ciclo 35)
+;; Resultado esperado:
+;; "Ciclo perfecto"
+
+;; Caso límite superior
+(recomendacion_ciclo 150)
+;; Resultado esperado:
+;; "Ciclo perfecto"
+
+;; Caso fuera del rango habitual
+(recomendacion_ciclo -5)
+;; Resultado esperado:
+;; "El ciclo es muy corto"
+
+;; ========================================================
+;; REQUERIMIENTO 1 - transicion
+;; ========================================================
+
+;; Caso normal
+(transicion 'en-rojo 'verde)
+;; Resultado esperado:
+;; (EN-ROJO "cambiar-a-verde")
+
+;; Caso normal
+(transicion 'en-verde 'amarillo)
+;; Resultado esperado:
+;; (EN-VERDE "cambiar-a-amarillo")
+
+;; Caso inválido
+(transicion 'en-rojo 'amarillo)
+;; Resultado esperado:
+;; (EN-ROJO ACCION-POR-DEFECTO)
+
+;; ========================================================
+;; REQUERIMIENTO 2 - timer
+;; ========================================================
+
+;; Caso normal
+(timer 0)
+;; Resultado esperado:
+;; EN-ROJO
+
+;; Cambio de estado
+(timer 90)
+;; Resultado esperado:
+;; EN-AMARILLO
+
+;; Caso normal
+(timer 100)
+;; Resultado esperado:
+;; EN-VERDE
+
+;; ========================================================
+;; REQUERIMIENTO 3 - log-cambio-estado
+;; ========================================================
+
+;; Caso normal
+(log-cambio-estado 'en-rojo 'en-verde)
+
+;; Caso normal
+(log-cambio-estado 'en-verde 'en-amarillo)
+
+;; ========================================================
+;; EXTENSIÓN 1 - amarillo-intermitente
+;; ========================================================
+
+;; NOTA: Los siguientes ejemplos corresponden a la versión extendida
+;; del timer definida en amarillo-intermitente.lisp.
+
+;; Caso normal
+(timer 90)
+;; Resultado esperado:
+;; EN-AMARILLO-INTERMITENTE
+
+;; Caso normal
+(timer 220)
+;; Resultado esperado:
+;; EN-AMARILLO
