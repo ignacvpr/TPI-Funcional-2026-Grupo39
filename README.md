@@ -14,7 +14,7 @@
 | Pujol Facundo Emiliano | [@facundoemilianopujol02-maker](https://github.com/facundoemilianopujol02-maker) |
 
 ## Video de defensa
-[Ver en YouTube]()
+[Ver en YouTube](https://www.youtube.com/watch?v=rexEWCYVZBk)
 
 ## Estructura del repositorio
 - `lisp/` — Código Common Lisp (Fases 1 y 2)
