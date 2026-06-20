@@ -82,7 +82,7 @@
 
 ;; REQUERIMIENTO 3:
 ;; ========================================================
-;; FUNCIÓN: log-cambio-estado
+;; FUNCIÓN: sistema-auditoria
 ;; NATURALEZA: Impura (Efecto secundario: realiza operaciones de E/S en terminal)
 ;; ESTRATEGIA: Función Simple / Secuencial
 ;; IMPACTO: No Destructiva
