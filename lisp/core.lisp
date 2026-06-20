@@ -80,16 +80,26 @@
 
 
 
-;; REQUERIMIENTO 3:
 ;; ========================================================
-;; FUNCIÓN: sistema-auditoria
-;; NATURALEZA: Impura (Efecto secundario: realiza operaciones de E/S en terminal)
-;; ESTRATEGIA: Función Simple / Secuencial
-;; IMPACTO: No Destructiva
+;; REQUERIMIENTO 3 - log-cambio-estado
+;; FUNCIÓN: log-cambio-estado
+;; NATURALEZA: Impura (escribe en pantalla y en archivo)
+;; ESTRATEGIA: Funcion Simple
+;; IMPACTO: No destructiva
 ;; ========================================================
-(defun log-cambio-estado (luz1 luz2)
+;; se modifico esta funcion para usar local-time en lugar de epoch
+;; ahora obtiene la fecha automaticamente con local-time:now
+;; y ademas guarda el registro en un archivo de texto
+(defun log-cambio-estado (color-anterior color-nuevo)
   (let ((fecha (local-time:format-timestring nil (local-time:now))))
-    (format t "~%Tiempo [~A]: la luz ha cambiado de ~A a ~A" fecha luz1 luz2)))
+    ;; imprime en pantalla
+    (format t "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo)
+    ;; guarda en archivo
+    (with-open-file (stream "informe-ejecucion-semaforo.txt"
+                    :direction :output
+                    :if-exists :append
+                    :if-does-not-exist :create)
+      (format stream "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo))))
 
 
 
