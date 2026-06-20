@@ -46,17 +46,17 @@
   ;; calcula en que punto del ciclo de 216 segundos estamos
   (let ((posicion (mod tiempo-unix 216)))
 
-    ;; comparamos la pocision con el rango de cada color 
+    ;; comparamos la posicion con el rango de cada color
     (cond
 
       ;; 0 a 89 segundos, rojo (dura 90 segundos)
       ((< posicion 90)  'en-rojo)
 
-      ;; 90 a 95 segundos, amarillo (dura 6 segundos)
-      ((< posicion 96)  'en-amarillo)
+      ;; 90 a 209 segundos, verde (dura 120 segundos)
+      ((< posicion 210)  'en-verde)
 
-      ;; 96 a 215 segundos, verde (dura 120 segundos)
-      (t  'en-verde)
+      ;; 210 a 215 segundos, amarillo (dura 6 segundos)
+      (t  'en-amarillo)
       )
     )
   )
