@@ -339,12 +339,12 @@
 ;; Cambio de estado
 (timer 90)
 ;; Resultado esperado:
-;; EN-AMARILLO
+;; EN-VERDE
 
 ;; Caso normal
-(timer 100)
+(timer 210)
 ;; Resultado esperado:
-;; EN-VERDE
+;; EN-AMARILLO
 
 ;; ========================================================
 ;; REQUERIMIENTO 3 - log-cambio-estado
