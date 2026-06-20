@@ -4,12 +4,10 @@
 % ESTRATEGIA: Pattern Matching
 % IMPACTO: No destructiva
 % ========================================================
-
 % mirando la funcion en lisp, cada caso del cond
 % se convierte en una clausula separada en erlang
-
 -module(semaforo).
--export([transicion/2]).
+-export([transicion/2, timer/1]).
 
 % caso en-rojo a verde
 transicion(en_rojo, verde) ->
@@ -33,11 +31,10 @@ transicion(ColorActual, _) ->
 % ESTRATEGIA: Pattern Matching con guardas
 % IMPACTO: No destructiva
 % ========================================================
-
 timer(TiempoUnix) ->
     Posicion = TiempoUnix rem 216,
     if
         Posicion < 90 -> en_rojo;
-        Posicion < 96 -> en_amarillo;
-        true -> en_verde
+        Posicion < 210 -> en_verde;
+        true -> en_amarillo
     end.
