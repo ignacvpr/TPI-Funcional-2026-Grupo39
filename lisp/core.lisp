@@ -358,8 +358,14 @@
 
 ;; ========================================================
 ;; EXTENSIÓN 1 - amarillo-intermitente
-(timer 90)
+;; NOTA: Los siguientes ejemplos corresponden a la versión extendida
+;; del timer definida en amarillo-intermitente.lisp.
+;; Para probarlos, cargar primero amarillo-intermitente.lisp
+
+;; Caso normal (versión extendida 222s)
+;; (timer 90)
 ;; Resultado esperado: EN-AMARILLO-INTERMITENTE
 
-(timer 220)
+;; Caso normal (versión extendida 222s)
+;; (timer 220)
 ;; Resultado esperado: EN-AMARILLO
