@@ -1,7 +1,7 @@
 ;; Sistema de Semáforos Inteligentes
 ;; Grupo 39 — Paradigmas y Lenguajes 2026
 
-
+(ql:quickload "local-time")
 ;; ========================================================
 ;; FUNCIÓN: transicion
 ;; NATURALEZA: Pura (siempre el mismo
