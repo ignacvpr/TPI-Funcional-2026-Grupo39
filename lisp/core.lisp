@@ -1,7 +1,23 @@
+;; =========================================================
 ;; Sistema de Semáforos Inteligentes
 ;; Grupo 39 — Paradigmas y Lenguajes 2026
+;; =========================================================
+;; Requiere SBCL con Quicklisp y local-time instalados
+;; =========================================================
+
+
 
 (ql:quickload "local-time")
+
+;;; ========================================================
+;;  ITERACION 1
+;;  - ciclo: rojo → verde → amarillo → rojo
+;;  - duración total: 216 segundos
+;;  - estados: en-rojo, en-verde, en-amarillo
+;;; ========================================================
+
+
+;; REQUERIMIENTO 1:
 ;; ========================================================
 ;; FUNCIÓN: transicion
 ;; NATURALEZA: Pura (siempre el mismo
@@ -32,6 +48,7 @@
      (list color-actual 'accion-por-defecto))))
 
 
+;; REQUERIMIENTO 2:
 ;; ========================================================
 ;; FUNCIÓN: timer
 ;; NATURALEZA: Pura — mismo timestamp siempre devuelve
@@ -62,6 +79,46 @@
   )
 
 
+
+;; REQUERIMIENTO 3:
+;; ========================================================
+;; FUNCIÓN: log-cambio-estado
+;; NATURALEZA: Impura (Efecto secundario: realiza operaciones de E/S en terminal)
+;; ESTRATEGIA: Función Simple / Secuencial
+;; IMPACTO: No Destructiva
+;; ========================================================
+(defun log-cambio-estado (luz1 luz2)
+  (let ((fecha (local-time:format-timestring nil (local-time:now))))
+    (format t "~%Tiempo [~A]: la luz ha cambiado de ~A a ~A" fecha luz1 luz2)))
+
+
+
+;; REQUERIMIENTO 4:
+;; ========================================================
+;; FUNCIÓN: duracion_ciclo
+;; NATURALEZA: Pura (mismo input siempre devuelve mismo output)
+;; ESTRATEGIA: Función Simple (operación aritmética directa)
+;; IMPACTO: No Destructiva
+;; ========================================================
+(defun duracion_ciclo () 
+  (+ 90 6 120))
+
+
+;; ========================================================
+;; FUNCIÓN: recomendacion_ciclo
+;; NATURALEZA: Pura (Evaluación lógica estricta basada únicamente en sus argumentos)
+;; ESTRATEGIA: Función Condicional (Uso de la macro cond)
+;; IMPACTO: No Destructiva
+;; ========================================================
+(defun recomendacion_ciclo (tiempo_total)
+  (cond
+    ((< tiempo_total 35) "El ciclo es muy corto")
+    ((and (>= tiempo_total 35) (<= tiempo_total 150)) "Ciclo perfecto")
+    ((> tiempo_total 150) "Ciclo demasiado largo")))
+
+
+;; REQUERIMIENTO 5:
+;; ============================================================
 ;; FUNCIÓN: minutos-a-segundos
 ;; NATURALEZA: Pura
 ;; ESTRATEGIA: Función Simple
@@ -107,6 +164,9 @@
      )
        ciclos-completos))))
 
+
+
+;; REQUERIMIENTO 6:
 ;; ============================================================
 ;; FUNCIÓN: calcular-porcentaje
 ;; NATURALEZA: Pura (mismo input siempre devuelve mismo output)
@@ -167,8 +227,8 @@
 ;; IMPACTO: No Destructiva
 ;; ============================================================
 (defun distribucion-actual ()
-  "Calcula la distribución porcentual usando las reglas
-   de negocio actuales: Rojo=90s, Amarillo=6s, Verde=120s"
+  ;,"Calcula la distribución porcentual usando las reglas
+  ;;de negocio actuales: Rojo=90s, Amarillo=6s, Verde=120s"
   (informe-distribucion 90 6 120))
 
 
@@ -194,51 +254,19 @@
     (format t "================================================~%")
     distribucion))
 
-;; ========================================================
-;; FUNCIÓN: sistema_auditoria
-;; NATURALEZA: Impura (Efecto secundario: realiza operaciones de E/S en terminal)
-;; ESTRATEGIA: Función Simple / Secuencial
-;; IMPACTO: No Destructiva
-;; ========================================================
-(defun log-cambio-estado (luz1 luz2)
-  (let ((fecha (local-time:format-timestring nil (local-time:now))))
-    (format t "~%Tiempo [~A]: la luz ha cambiado de ~A a ~A" fecha luz1 luz2)))
 
 
-;; ========================================================
-;; FUNCIÓN: duracion_ciclo
-;; NATURALEZA: Pura (mismo input siempre devuelve mismo output)
-;; ESTRATEGIA: Función Simple (operación aritmética directa)
-;; IMPACTO: No Destructiva
-;; ========================================================
-(defun duracion_ciclo () 
-  (+ 90 6 120))
 
 
-;; ========================================================
-;; FUNCIÓN: recomendacion_ciclo
-;; NATURALEZA: Pura (Evaluación lógica estricta basada únicamente en sus argumentos)
-;; ESTRATEGIA: Función Condicional (Uso de la macro cond)
-;; IMPACTO: No Destructiva
-;; ========================================================
-(defun recomendacion_ciclo (tiempo_total)
-  (cond
-    ((< tiempo_total 35) "El ciclo es muy corto")
-    ((and (>= tiempo_total 35) (<= tiempo_total 150)) "Ciclo perfecto")
-    ((> tiempo_total 150) "Ciclo demasiado largo")))
 
 
-;; ========================================================
-;; EXTENSIÓN 1: INTERMITENCIA DE SEGURIDAD
-;; ========================================================
-;;
-;; Implementación de la extensión de intermitencia.
-;; No reemplaza la implementación original utilizada en los
-;; requerimientos 1 al 6.
-;;
-;; Se conserva comentada para documentación de la extensión.
-;;
-;; ========================================================
+
+;;; ========================================================
+;;  ITERACION 2 - EXTENSIÓN 1: INTERMITENCIA DE SEGURIDAD
+;;  - ciclo: rojo → intermitente → verde → intermitente → amarillo → intermitente → rojo
+;;  - duración total: 225 segundos
+;;  - se agrega el estado en-amarillo-intermitente
+;;; ========================================================
 
 #|
 ;; ========================================================
