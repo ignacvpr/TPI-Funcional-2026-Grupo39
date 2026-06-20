@@ -200,7 +200,7 @@
 ;; ESTRATEGIA: Función Simple / Secuencial
 ;; IMPACTO: No Destructiva
 ;; ========================================================
-(defun sistema_auditoria (luz1 luz2)
+(defun log-cambio-estado (luz1 luz2)
   (let ((fecha (local-time:format-timestring nil (local-time:now))))
     (format t "~%Tiempo [~A]: la luz ha cambiado de ~A a ~A" fecha luz1 luz2)))
 
@@ -358,5 +358,8 @@
 
 ;; ========================================================
 ;; EXTENSIÓN 1 - amarillo-intermitente
-;; NOTA: Los ejemplos de esta extensión deben ejecutarse
-;; cargando el archivo amarillo-intermitente.lisp, no core.lisp
+(timer 90)
+;; Resultado esperado: EN-AMARILLO-INTERMITENTE
+
+(timer 220)
+;; Resultado esperado: EN-AMARILLO
