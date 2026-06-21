@@ -69,32 +69,27 @@
 
 
 ;; ========================================================
-;; REQUERIMIENTO 3 - log-cambio-estado
-;; FUNCIÓN: log-cambio-estado
-;; NATURALEZA: Impura (escribe en pantalla y en archivo)
-;; ESTRATEGIA: Funcion Simple
-;; IMPACTO: No destructiva
+;; FUNCIÓN: log-cambio-estado 
+;; NATURALEZA: Impura 
+;; ESTRATEGIA: Función Simple 
+;; IMPACTO: No Destructiva
 ;; ========================================================
-;; se modifico esta funcion para usar local-time en lugar de epoch
-;; ahora obtiene la fecha automaticamente con local-time:now
-;; y ademas guarda el registro en un archivo de texto
 (defun log-cambio-estado (color-anterior color-nuevo)
   (let ((fecha (local-time:format-timestring nil (local-time:now))))
-    ;; imprime en pantalla
+    ;; Imprime el aviso en la consola
     (format t "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo)
-    ;; guarda en archivo
+    ;; Guarda el registro en el archivo de texto
     (with-open-file (stream "informe-ejecucion-semaforo.txt"
                     :direction :output
                     :if-exists :append
                     :if-does-not-exist :create)
       (format stream "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo))))
 
-
-;; REQUERIMIENTO 4:
+;; REQUERIMIENTO  5
 ;; ========================================================
-;; FUNCIÓN: duracion-ciclo
-;; NATURALEZA: Pura (mismo input siempre devuelve mismo output)
-;; ESTRATEGIA: Función Simple (operación aritmética directa)
+;; FUNCIÓN: duracion-ciclo 
+;; NATURALEZA: Pura
+;; ESTRATEGIA: Función Simple 
 ;; IMPACTO: No Destructiva
 ;; ========================================================
 (defun duracion-ciclo (rojo verde amarillo) 
@@ -103,8 +98,8 @@
 
 ;; ========================================================
 ;; FUNCIÓN: recomendacion-ciclo
-;; NATURALEZA: Pura (Evaluación lógica estricta basada únicamente en sus argumentos)
-;; ESTRATEGIA: Función Condicional (Uso de la macro cond)
+;; NATURALEZA: Pura 
+;; ESTRATEGIA: Función Condicional 
 ;; IMPACTO: No Destructiva
 ;; ========================================================
 (defun recomendacion-ciclo (tiempo-total)
@@ -112,7 +107,6 @@
     ((< tiempo-total 35) "El ciclo es muy corto")
     ((and (>= tiempo-total 35) (<= tiempo-total 150)) "Ciclo perfecto")
     ((> tiempo-total 150) "Ciclo demasiado largo")))
-
 
 ;; REQUERIMIENTO 5:
 ;; ============================================================
