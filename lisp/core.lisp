@@ -5,8 +5,6 @@
 ;; Requiere SBCL con Quicklisp y local-time instalados
 ;; =========================================================
 
-
-
 (ql:quickload "local-time")
 
 ;;; ========================================================
@@ -20,30 +18,28 @@
 ;; REQUERIMIENTO 1:
 ;; ========================================================
 ;; FUNCIÓN: transicion
-;; NATURALEZA: Pura (siempre el mismo
-;;             resultado. No imprime ni modifica nada mas)
+;; NATURALEZA: Pura (siempre el mismo resultado. No imprime ni modifica nada mas)
 ;; ESTRATEGIA: Función Predicado
 ;; IMPACTO: No destructiva.
 ;; ========================================================
 
-;;recibe el estado actual y al color que se quiere ir
-;;retorna uan lista con el estado y una accion a realizar
+;; recibe el estado actual y al color que se quiere ir
+;; retorna una lista con el estado y una accion a realizar
 (defun transicion (color-actual cambiar-a) 
   (cond
-
     ;; comprueba si esta en rojo y quiere ir a verde
-    ((and (equal color-actual 'en-rojo)     (equal cambiar-a 'verde)) ;; equal compara si dos simbolos son exactamente el mismo
+    ((and (equal color-actual 'en-rojo) (equal cambiar-a 'verde)) ;; equal compara si dos simbolos son exactamente el mismo
      (list color-actual "cambiar-a-verde"))
 
-    ;;comprueba si esta en verde y quiere ir a amarillo
-    ((and (equal color-actual 'en-verde)    (equal cambiar-a 'amarillo))
+    ;; comprueba si esta en verde y quiere ir a amarillo
+    ((and (equal color-actual 'en-verde) (equal cambiar-a 'amarillo))
      (list color-actual "cambiar-a-amarillo"))
 
-    ;; comprueba si esta en amarillo y quiere i a rojo
+    ;; comprueba si esta en amarillo y quiere ir a rojo
     ((and (equal color-actual 'en-amarillo) (equal cambiar-a 'rojo))
      (list color-actual "cambiar-a-rojo"))
 
-    ;;retorna color actual y 'accion-por-defecto si la transición no es válida
+    ;; retorna color actual y 'accion-por-defecto si la transición no es válida
     (t
      (list color-actual 'accion-por-defecto))))
 
@@ -51,21 +47,17 @@
 ;; REQUERIMIENTO 2:
 ;; ========================================================
 ;; FUNCIÓN: timer
-;; NATURALEZA: Pura — mismo timestamp siempre devuelve
-;;             el mismo color. No modifica nada externo.
+;; NATURALEZA: Pura — mismo timestamp siempre devuelve el mismo color. No modifica nada externo.
 ;; ESTRATEGIA: Condicional simple
 ;; IMPACTO: No destructiva
 ;; ========================================================
 
 ;; recibe un tiempo Unix y devuelve el color correspondiente al momento especifico
 (defun timer (tiempo-unix)
-
   ;; calcula en que punto del ciclo de 216 segundos estamos
   (let ((posicion (mod tiempo-unix 216)))
-
     ;; comparamos la posicion con el rango de cada color
     (cond
-
       ;; 0 a 89 segundos, rojo (dura 90 segundos)
       ((< posicion 90)  'en-rojo)
 
@@ -73,11 +65,7 @@
       ((< posicion 210)  'en-verde)
 
       ;; 210 a 215 segundos, amarillo (dura 6 segundos)
-      (t  'en-amarillo)
-      )
-    )
-  )
-
+      (t  'en-amarillo))))
 
 
 ;; ========================================================
@@ -102,29 +90,28 @@
       (format stream "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo))))
 
 
-
 ;; REQUERIMIENTO 4:
 ;; ========================================================
-;; FUNCIÓN: duracion_ciclo
+;; FUNCIÓN: duracion-ciclo
 ;; NATURALEZA: Pura (mismo input siempre devuelve mismo output)
 ;; ESTRATEGIA: Función Simple (operación aritmética directa)
 ;; IMPACTO: No Destructiva
 ;; ========================================================
-(defun duracion_ciclo () 
-  (+ 90 6 120))
+(defun duracion-ciclo (rojo verde amarillo) 
+  (+ rojo verde amarillo))
 
 
 ;; ========================================================
-;; FUNCIÓN: recomendacion_ciclo
+;; FUNCIÓN: recomendacion-ciclo
 ;; NATURALEZA: Pura (Evaluación lógica estricta basada únicamente en sus argumentos)
 ;; ESTRATEGIA: Función Condicional (Uso de la macro cond)
 ;; IMPACTO: No Destructiva
 ;; ========================================================
-(defun recomendacion_ciclo (tiempo_total)
+(defun recomendacion-ciclo (tiempo-total)
   (cond
-    ((< tiempo_total 35) "El ciclo es muy corto")
-    ((and (>= tiempo_total 35) (<= tiempo_total 150)) "Ciclo perfecto")
-    ((> tiempo_total 150) "Ciclo demasiado largo")))
+    ((< tiempo-total 35) "El ciclo es muy corto")
+    ((and (>= tiempo-total 35) (<= tiempo-total 150)) "Ciclo perfecto")
+    ((> tiempo-total 150) "Ciclo demasiado largo")))
 
 
 ;; REQUERIMIENTO 5:
@@ -141,7 +128,6 @@
   (* minutos 60))
 
 
-
 ;; ============================================================
 ;; FUNCIÓN: ciclos-por-tiempo
 ;; NATURALEZA: Pura (mismo input siempre devuelve mismo output)
@@ -149,31 +135,24 @@
 ;; IMPACTO: No Destructiva
 ;; ============================================================
 (defun ciclos-por-tiempo (duracion-minutos)
-  "Calcula cuántos ciclos semafóricos completos entran
-   en una cantidad de minutos dada.
+  "Calcula cuántos ciclos semafóricos completos entran en una cantidad de minutos dada.
    Entrada: duración en minutos (número positivo)
    Salida: número de ciclos completos (entero)"
   (cond
-    ; validación: la duración debe ser positiva
+    ;; validación: la duración debe ser positiva
     ((not (and (numberp duracion-minutos)
                (> duracion-minutos 0)))
      (format t "ERROR: La duración debe ser un número positivo~%")
      nil)
 
-    ; caso válido: calculamos los ciclos
+    ;; caso válido: calculamos los ciclos
     (t
-     (let* (
-       ; convertimos minutos a segundos
-       (segundos-totales   (minutos-a-segundos duracion-minutos))
-
-       ; duración de un ciclo completo con valores actuales
-       (duracion-ciclo     (+ 90 6 120))
-
-       ; dividimos y redondeamos hacia abajo
-       (ciclos-completos   (floor (/ segundos-totales duracion-ciclo)))
-     )
+     (let* ((segundos-totales  (minutos-a-segundos duracion-minutos))
+            ;; duración de un ciclo completo llamando a nuestra función dinámica
+            (duracion-del-ciclo (duracion-ciclo 90 120 6))
+            ;; dividimos y redondeamos hacia abajo
+            (ciclos-completos   (floor (/ segundos-totales duracion-del-ciclo))))
        ciclos-completos))))
-
 
 
 ;; REQUERIMIENTO 6:
@@ -184,8 +163,7 @@
 ;; IMPACTO: No Destructiva
 ;; ============================================================
 (defun calcular-porcentaje (tiempo-color duracion-total)
-  "Calcula el porcentaje de tiempo que ocupa un color
-   dentro de la duración total de un ciclo."
+  "Calcula el porcentaje de tiempo que ocupa un color dentro de la duración total de un ciclo."
   (* (/ (* tiempo-color 1.0) duracion-total) 100))
 
 
@@ -210,20 +188,16 @@
   "Calcula la distribución porcentual de cada color en 1 hora.
    Devuelve una lista de sublistas: (color porcentaje)
    Los tiempos se expresan en segundos."
-  (let* (
-    ; calculamos la duración total del ciclo
-    (duracion-total (duracion-ciclo-total
-                      tiempo-rojo
-                      tiempo-amarillo
-                      tiempo-verde))
-
-    ; creamos la lista de colores con sus tiempos
-    (colores-tiempos (list
-                       (list 'rojo     tiempo-rojo)
-                       (list 'amarillo tiempo-amarillo)
-                       (list 'verde    tiempo-verde)))
-  )
-    ; usamos mapcar para calcular el porcentaje de cada color
+  (let* ((duracion-total (duracion-ciclo-total
+                          tiempo-rojo
+                          tiempo-amarillo
+                          tiempo-verde))
+         ;; creamos la lista de colores con sus tiempos
+         (colores-tiempos (list
+                            (list 'rojo      tiempo-rojo)
+                            (list 'amarillo tiempo-amarillo)
+                            (list 'verde    tiempo-verde))))
+    ;; usamos mapcar para calcular el porcentaje de cada color
     (mapcar (lambda (par)
               (list (car par)
                     (calcular-porcentaje (cadr par) duracion-total)))
@@ -237,8 +211,7 @@
 ;; IMPACTO: No Destructiva
 ;; ============================================================
 (defun distribucion-actual ()
-  ;,"Calcula la distribución porcentual usando las reglas
-  ;;de negocio actuales: Rojo=90s, Amarillo=6s, Verde=120s"
+  "Calcula la distribución porcentual usando las reglas de negocio actuales: Rojo=90s, Amarillo=6s, Verde=120s"
   (informe-distribucion 90 6 120))
 
 
@@ -249,8 +222,7 @@
 ;; IMPACTO: No Destructiva
 ;; ============================================================
 (defun imprimir-distribucion (tiempo-rojo tiempo-amarillo tiempo-verde)
-  "Muestra en terminal el informe de distribución temporal
-   de forma legible para el operador."
+  "Muestra en terminal el informe de distribución temporal de forma legible para el operador."
   (let* ((distribucion (informe-distribucion
                           tiempo-rojo
                           tiempo-amarillo
@@ -263,12 +235,6 @@
             distribucion)
     (format t "================================================~%")
     distribucion))
-
-
-
-
-
-
 
 
 ;;; ========================================================
@@ -308,41 +274,44 @@
 ;; REQUERIMIENTO 7 - EJEMPLOS DE USO
 ;; Sistema de Semáforos Inteligentes
 ;; ========================================================
+
 ;; ========================================================
-;; FUNCIÓN: duracion_ciclo
+;; FUNCIÓN: duracion-ciclo
 ;; ========================================================
-;; Caso normal
-(duracion_ciclo)
+;; Caso normal (ahora requiere argumentos con los valores actuales)
+(duracion-ciclo 90 120 6)
 ;; Resultado esperado: 216
+
 ;; ========================================================
-;; FUNCIÓN: recomendacion_ciclo
+;; FUNCIÓN: recomendacion-ciclo
 ;; ========================================================
-;; Caso normal
-(recomendacion_ciclo (duracion_ciclo))
+;; Caso normal usando la nueva estructura de duracion-ciclo
+(recomendacion-ciclo (duracion-ciclo 90 120 6))
 ;; Resultado esperado:
 ;; "Ciclo demasiado largo"
+
 ;; Camino alternativo
-(recomendacion_ciclo 100)
+(recomendacion-ciclo 100)
 ;; Resultado esperado:
 ;; "Ciclo perfecto"
 
 ;; Camino alternativo
-(recomendacion_ciclo 20)
+(recomendacion-ciclo 20)
 ;; Resultado esperado:
 ;; "El ciclo es muy corto"
 
 ;; Caso límite inferior
-(recomendacion_ciclo 35)
+(recomendacion-ciclo 35)
 ;; Resultado esperado:
 ;; "Ciclo perfecto"
 
 ;; Caso límite superior
-(recomendacion_ciclo 150)
+(recomendacion-ciclo 150)
 ;; Resultado esperado:
 ;; "Ciclo perfecto"
 
 ;; Caso fuera del rango habitual
-(recomendacion_ciclo -5)
+(recomendacion-ciclo -5)
 ;; Resultado esperado:
 ;; "El ciclo es muy corto"
 
@@ -393,17 +362,3 @@
 
 ;; Caso normal
 (log-cambio-estado 'en-verde 'en-amarillo)
-
-;; ========================================================
-;; EXTENSIÓN 1 - amarillo-intermitente
-;; NOTA: Los siguientes ejemplos corresponden a la versión extendida
-;; del timer definida en amarillo-intermitente.lisp.
-;; Para probarlos, cargar primero amarillo-intermitente.lisp
-
-;; Caso normal (versión extendida 222s)
-;; (timer 90)
-;; Resultado esperado: EN-AMARILLO-INTERMITENTE
-
-;; Caso normal (versión extendida 222s)
-;; (timer 220)
-;; Resultado esperado: EN-AMARILLO
