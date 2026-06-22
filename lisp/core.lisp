@@ -335,17 +335,24 @@
 ;; Resultado esperado: EN-ROJO
 
 (timer 90)
+;; Resultado esperado: EN-AMARILLO-INTERMITENTE
+
+(timer 93)
 ;; Resultado esperado: EN-VERDE
 
-(timer 210)
+(timer 213)
+;; Resultado esperado: EN-AMARILLO-INTERMITENTE
+
+(timer 216)
 ;; Resultado esperado: EN-AMARILLO
 
-(timer 215)
-;; Resultado esperado: EN-AMARILLO
+(timer 222)
+;; Resultado esperado: EN-AMARILLO-INTERMITENTE
 
 ;; Nuevo ciclo
-(timer 216)
+(timer 225)
 ;; Resultado esperado: EN-ROJO
+
 
 
 ;; ========================================================
