@@ -5,7 +5,7 @@
 ;; Requiere SBCL con Quicklisp y local-time instalados
 ;; =========================================================
 
-
+(ql:quickload "local-time")
 
 ;;; ========================================================
 ;;  ITERACION 1
