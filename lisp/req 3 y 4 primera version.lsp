@@ -12,15 +12,17 @@
 ;; IMPACTO: No Destructiva
 ;; ========================================================
 (defun log-cambio-estado (color-anterior color-nuevo)
-  (let ((fecha (local-time:format-timestring nil (local-time:now))))
-    ;; Imprime el aviso en la consola
-    (format t "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo)
-    ;; Guarda el registro en el archivo de texto
-    (with-open-file (stream "informe-ejecucion-semaforo.txt"
-                    :direction :output
-                    :if-exists :append
-                    :if-does-not-exist :create)
-      (format stream "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo))))
+  (multiple-value-bind (segundo minuto hora dia mes ano) (get-decoded-time)
+    (let ((fecha (format nil "~4,'0D-~2,'0D-~2,'0D T ~2,'0D:~2,'0D:~2,'0D" 
+                         ano mes dia hora minuto segundo)))
+      
+      (format t "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo)
+      
+      (with-open-file (stream "informe-ejecucion-semaforo.txt"
+                      :direction :output
+                      :if-exists :append
+                      :if-does-not-exist :create)
+        (format stream "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo)))))
 
 
 ;; ========================================================
