@@ -67,7 +67,7 @@
       ;; 210 a 215 segundos, amarillo (dura 6 segundos)
       (t  'en-amarillo))))
 
-
+;; REQUERIMIENTO  3
 ;; ========================================================
 ;; FUNCIÓN: log-cambio-estado 
 ;; NATURALEZA: Impura 
@@ -85,7 +85,7 @@
                     :if-does-not-exist :create)
       (format stream "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo))))
 
-;; REQUERIMIENTO  5
+;; REQUERIMIENTO  4
 ;; ========================================================
 ;; FUNCIÓN: duracion-ciclo 
 ;; NATURALEZA: Pura
