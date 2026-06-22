@@ -231,19 +231,14 @@
     distribucion))
 
 
-;;; ========================================================
-;;  ITERACION 2 - EXTENSIÓN 1: INTERMITENCIA DE SEGURIDAD
-;;  - ciclo: rojo → intermitente → verde → intermitente → amarillo → intermitente → rojo
-;;  - duración total: 225 segundos
-;;  - se agrega el estado en-amarillo-intermitente
-;;; ========================================================
-
-#|
 ;; ========================================================
-;; FUNCIÓN: color-valido-p
-;; NATURALEZA: Pura
-;; ESTRATEGIA: Función Predicado
-;; IMPACTO: No Destructiva
+;; EXTENSIÓN 1: INTERMITENCIA DE SEGURIDAD
+;; ========================================================
+;; Ciclo con intermitencia:
+;; rojo -> amarillo-intermitente -> verde
+;; -> amarillo-intermitente -> amarillo
+;; -> amarillo-intermitente -> rojo
+;; Duración total: 225 segundos
 ;; ========================================================
 
 (defun color-valido-p (color)
@@ -253,80 +248,72 @@
             en-verde
             en-amarillo-intermitente)))
 
+(defun transicion (color-actual cambiar-a)
+  (cond
+    ((and (eq color-actual 'en-rojo)
+          (eq cambiar-a 'amarillo-intermitente))
+     (list 'en-rojo "cambiar-a-amarillo-intermitente"))
+
+    ((and (eq color-actual 'en-amarillo-intermitente)
+          (eq cambiar-a 'verde))
+     (list 'en-amarillo-intermitente "cambiar-a-verde"))
+
+    ((and (eq color-actual 'en-verde)
+          (eq cambiar-a 'amarillo-intermitente))
+     (list 'en-verde "cambiar-a-amarillo-intermitente"))
+
+    ((and (eq color-actual 'en-amarillo-intermitente)
+          (eq cambiar-a 'amarillo))
+     (list 'en-amarillo-intermitente "cambiar-a-amarillo"))
+
+    ((and (eq color-actual 'en-amarillo)
+          (eq cambiar-a 'amarillo-intermitente))
+     (list 'en-amarillo "cambiar-a-amarillo-intermitente"))
+
+    ((and (eq color-actual 'en-amarillo-intermitente)
+          (eq cambiar-a 'rojo))
+     (list 'en-amarillo-intermitente "cambiar-a-rojo"))
+
+    (t
+     (list color-actual 'accion-por-defecto))))
 
 (defun timer (tiempo-unix)
-  (let ((posicion (mod tiempo-unix 222)))
+  (let ((posicion (mod tiempo-unix 225)))
     (cond
       ((< posicion 90) 'en-rojo)
       ((< posicion 93) 'en-amarillo-intermitente)
       ((< posicion 213) 'en-verde)
       ((< posicion 216) 'en-amarillo-intermitente)
-      (t 'en-amarillo))))
-|#
+      ((< posicion 222) 'en-amarillo)
+      (t 'en-amarillo-intermitente))))
 
 ;; ========================================================
 ;; REQUERIMIENTO 7 - EJEMPLOS DE USO
-;; Sistema de Semáforos Inteligentes
 ;; ========================================================
-
-;; ========================================================
-;; FUNCIÓN: duracion-ciclo
-;; ========================================================
-;; Caso normal (ahora requiere argumentos con los valores actuales)
-(duracion-ciclo 90 120 6)
-;; Resultado esperado: 216
-
-;; ========================================================
-;; FUNCIÓN: recomendacion-ciclo
-;; ========================================================
-;; Caso normal usando la nueva estructura de duracion-ciclo
-(recomendacion-ciclo (duracion-ciclo 90 120 6))
-;; Resultado esperado:
-;; "Ciclo demasiado largo"
-
-;; Camino alternativo
-(recomendacion-ciclo 100)
-;; Resultado esperado:
-;; "Ciclo perfecto"
-
-;; Camino alternativo
-(recomendacion-ciclo 20)
-;; Resultado esperado:
-;; "El ciclo es muy corto"
-
-;; Caso límite inferior
-(recomendacion-ciclo 35)
-;; Resultado esperado:
-;; "Ciclo perfecto"
-
-;; Caso límite superior
-(recomendacion-ciclo 150)
-;; Resultado esperado:
-;; "Ciclo perfecto"
-
-;; Caso fuera del rango habitual
-(recomendacion-ciclo -5)
-;; Resultado esperado:
-;; "El ciclo es muy corto"
-
 ;; ========================================================
 ;; REQUERIMIENTO 1 - transicion
 ;; ========================================================
 
 ;; Caso normal
-(transicion 'en-rojo 'verde)
+(transicion 'en-rojo 'amarillo-intermitente)
 ;; Resultado esperado:
-;; (EN-ROJO "cambiar-a-verde")
+;; (EN-ROJO "cambiar-a-amarillo-intermitente")
 
 ;; Caso normal
-(transicion 'en-verde 'amarillo)
+(transicion 'en-amarillo-intermitente 'verde)
 ;; Resultado esperado:
-;; (EN-VERDE "cambiar-a-amarillo")
+;; (EN-AMARILLO-INTERMITENTE "cambiar-a-verde")
+
+;; Caso normal
+(transicion 'en-verde 'amarillo-intermitente)
+;; Resultado esperado:
+;; (EN-VERDE "cambiar-a-amarillo-intermitente")
 
 ;; Caso inválido
 (transicion 'en-rojo 'amarillo)
 ;; Resultado esperado:
 ;; (EN-ROJO ACCION-POR-DEFECTO)
+
 
 ;; ========================================================
 ;; REQUERIMIENTO 2 - timer
@@ -337,15 +324,31 @@
 ;; Resultado esperado:
 ;; EN-ROJO
 
-;; Cambio de estado
+;; Caso normal
 (timer 90)
+;; Resultado esperado:
+;; EN-AMARILLO-INTERMITENTE
+
+;; Caso normal
+(timer 100)
 ;; Resultado esperado:
 ;; EN-VERDE
 
 ;; Caso normal
-(timer 210)
+(timer 213)
+;; Resultado esperado:
+;; EN-AMARILLO-INTERMITENTE
+
+;; Caso normal
+(timer 220)
 ;; Resultado esperado:
 ;; EN-AMARILLO
+
+;; Caso normal
+(timer 223)
+;; Resultado esperado:
+;; EN-AMARILLO-INTERMITENTE
+
 
 ;; ========================================================
 ;; REQUERIMIENTO 3 - log-cambio-estado
