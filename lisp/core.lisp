@@ -289,4 +289,72 @@
 
 
 
-;; Caso norm
+;; ========================================================
+;; REQUERIMIENTO 7 - EJEMPLOS DE USO
+;; Sistema de Semáforos Inteligentes
+;; Grupo 39 — Paradigmas y Lenguajes 2026
+;; ========================================================
+;; NOTA: Cargar core.lisp antes de ejecutar estos ejemplos
+;; En SBCL: (load "core.lisp") y luego (load "ejemplos-requerimiento7.lisp")
+;; ========================================================
+
+;; ========================================================
+;; REQUERIMIENTO 1 - transicion
+;; ========================================================
+
+;; Camino normal - transiciones válidas
+(transicion 'en-rojo 'verde)
+;; Resultado esperado: (EN-ROJO "cambiar-a-verde")
+
+(transicion 'en-verde 'amarillo)
+;; Resultado esperado: (EN-VERDE "cambiar-a-amarillo")
+
+(transicion 'en-amarillo 'rojo)
+;; Resultado esperado: (EN-AMARILLO "cambiar-a-rojo")
+
+;; Camino alternativo - transiciones inválidas
+(transicion 'en-rojo 'amarillo)
+;; Resultado esperado: (EN-ROJO ACCION-POR-DEFECTO)
+
+(transicion 'en-verde 'rojo)
+;; Resultado esperado: (EN-VERDE ACCION-POR-DEFECTO)
+
+;; Caso de error - estado inexistente
+(transicion 'en-azul 'verde)
+;; Resultado esperado: (EN-AZUL ACCION-POR-DEFECTO)
+
+;; ========================================================
+;; REQUERIMIENTO 2 - timer
+;; ========================================================
+
+;; Camino normal
+(timer 0)
+;; Resultado esperado: EN-ROJO
+
+(timer 89)
+;; Resultado esperado: EN-ROJO
+
+(timer 90)
+;; Resultado esperado: EN-VERDE
+
+(timer 210)
+;; Resultado esperado: EN-AMARILLO
+
+(timer 215)
+;; Resultado esperado: EN-AMARILLO
+
+;; Nuevo ciclo
+(timer 216)
+;; Resultado esperado: EN-ROJO
+
+
+;; ========================================================
+;; REQUERIMIENTO 3 - log-cambio-estado
+;; NOTA: Requiere SBCL con local-time instalado
+;; ========================================================
+
+;; Camino normal
+;;(log-cambio-estado 'en-rojo 'en-verde)
+;; Resultado esperado: Tiempo [fecha legible]: la luz ha cambiado de EN-ROJO a EN-VERDE
+
+;;(log-cambio-estado 'en-verde 'en-amarillo)
