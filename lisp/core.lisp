@@ -53,7 +53,7 @@
 ;; ========================================================
 
 ;; recibe un tiempo Unix y devuelve el color correspondiente al momento especifico
-(defun timer-v1 (tiempo-unix)
+(defun timer (tiempo-unix)
   ;; calcula en que punto del ciclo de 216 segundos estamos
   (let ((posicion (mod tiempo-unix 216)))
     ;; comparamos la posicion con el rango de cada color
@@ -274,7 +274,7 @@
     (t
      (list color-actual 'accion-por-defecto))))
 
-(defun timer-semaforo (tiempo-unix)
+(defun timer (tiempo-unix)
   (let ((posicion (mod tiempo-unix 225)))
     (cond
       ((< posicion 90) 'en-rojo)
