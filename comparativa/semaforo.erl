@@ -1,27 +1,30 @@
+-module(semaforo).
+-export([transicion/2, timer/1]).
+
 % ========================================================
 % FUNCIÓN: transicion
 % NATURALEZA: Pura
 % ESTRATEGIA: Pattern Matching
 % IMPACTO: No destructiva
 % ========================================================
-% mirando la funcion en lisp, cada caso del cond
-% se convierte en una clausula separada en erlang
--module(semaforo).
--export([transicion/2, timer/1]).
+transicion(en_rojo, amarillo_intermitente) ->
+    {en_rojo, "cambiar-a-amarillo-intermitente"};
 
-% caso en-rojo a verde
-transicion(en_rojo, verde) ->
-    {en_rojo, "cambiar-a-verde"};
+transicion(en_amarillo_intermitente, verde) ->
+    {en_amarillo_intermitente, "cambiar-a-verde"};
 
-% caso en-verde a amarillo
-transicion(en_verde, amarillo) ->
-    {en_verde, "cambiar-a-amarillo"};
+transicion(en_verde, amarillo_intermitente) ->
+    {en_verde, "cambiar-a-amarillo-intermitente"};
 
-% caso en-amarillo a rojo
-transicion(en_amarillo, rojo) ->
-    {en_amarillo, "cambiar-a-rojo"};
+transicion(en_amarillo_intermitente, amarillo) ->
+    {en_amarillo_intermitente, "cambiar-a-amarillo"};
 
-% caso por defecto - transicion invalida
+transicion(en_amarillo, amarillo_intermitente) ->
+    {en_amarillo, "cambiar-a-amarillo-intermitente"};
+
+transicion(en_amarillo_intermitente, rojo) ->
+    {en_amarillo_intermitente, "cambiar-a-rojo"};
+
 transicion(ColorActual, _) ->
     {ColorActual, accion_por_defecto}.
 
@@ -32,9 +35,12 @@ transicion(ColorActual, _) ->
 % IMPACTO: No destructiva
 % ========================================================
 timer(TiempoUnix) ->
-    Posicion = TiempoUnix rem 216,
+    Posicion = TiempoUnix rem 225,
     if
         Posicion < 90 -> en_rojo;
-        Posicion < 210 -> en_verde;
-        true -> en_amarillo
+        Posicion < 93 -> en_amarillo_intermitente;
+        Posicion < 213 -> en_verde;
+        Posicion < 216 -> en_amarillo_intermitente;
+        Posicion < 222 -> en_amarillo;
+        true -> en_amarillo_intermitente
     end.
