@@ -53,7 +53,7 @@
 ;; ========================================================
 
 ;; recibe un tiempo Unix y devuelve el color correspondiente al momento especifico
-(defun timer (tiempo-unix)
+(defun timer-v1 (tiempo-unix)
   ;; calcula en que punto del ciclo de 216 segundos estamos
   (let ((posicion (mod tiempo-unix 216)))
     ;; comparamos la posicion con el rango de cada color
@@ -75,16 +75,17 @@
 ;; IMPACTO: No Destructiva
 ;; ========================================================
 (defun log-cambio-estado (color-anterior color-nuevo)
-  (let ((fecha (local-time:format-timestring nil (local-time:now))))
-    ;; Imprime el aviso en la consola
-    (format t "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo)
-    ;; Guarda el registro en el archivo de texto
-    (with-open-file (stream "informe-ejecucion-semaforo.txt"
-                    :direction :output
-                    :if-exists :append
-                    :if-does-not-exist :create)
-      (format stream "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo))))
-
+  (multiple-value-bind (segundo minuto hora dia mes ano) (get-decoded-time)
+    (let ((fecha (format nil "~4,'0D-~2,'0D-~2,'0D T ~2,'0D:~2,'0D:~2,'0D" 
+                         ano mes dia hora minuto segundo)))
+      
+      (format t "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo)
+      
+      (with-open-file (stream "informe-ejecucion-semaforo.txt"
+                      :direction :output
+                      :if-exists :append
+                      :if-does-not-exist :create)
+        (format stream "Tiempo [~A]: la luz ha cambiado de ~A a ~A~%" fecha color-anterior color-nuevo)))))
 ;; REQUERIMIENTO  4
 ;; ========================================================
 ;; FUNCIÓN: duracion-ciclo 
@@ -277,7 +278,7 @@
     (t
      (list color-actual 'accion-por-defecto))))
 
-(defun timer (tiempo-unix)
+(defun timer-semaforo (tiempo-unix)
   (let ((posicion (mod tiempo-unix 225)))
     (cond
       ((< posicion 90) 'en-rojo)
@@ -326,29 +327,29 @@
 ;; ========================================================
 
 ;; Camino normal
-(timer 0)
+(timer-semaforo 0)
 ;; Resultado esperado: EN-ROJO
 
-(timer 89)
+(timer-semaforo 89)
 ;; Resultado esperado: EN-ROJO
 
-(timer 90)
+(timer-semaforo 90)
 ;; Resultado esperado: EN-AMARILLO-INTERMITENTE
 
-(timer 93)
+(timer-semaforo 93)
 ;; Resultado esperado: EN-VERDE
 
-(timer 213)
+(timer-semaforo 213)
 ;; Resultado esperado: EN-AMARILLO-INTERMITENTE
 
-(timer 216)
+(timer-semaforo 216)
 ;; Resultado esperado: EN-AMARILLO
 
-(timer 222)
+(timer-semaforo 222)
 ;; Resultado esperado: EN-AMARILLO-INTERMITENTE
 
 ;; Nuevo ciclo
-(timer 225)
+(timer-semaforo 225)
 ;; Resultado esperado: EN-ROJO
 
 
