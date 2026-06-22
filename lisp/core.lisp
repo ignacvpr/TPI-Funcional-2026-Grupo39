@@ -302,26 +302,24 @@
 ;; REQUERIMIENTO 1 - transicion
 ;; ========================================================
 
-;; Camino normal - transiciones válidas
-(transicion 'en-rojo 'verde)
-;; Resultado esperado: (EN-ROJO "cambiar-a-verde")
+;; Camino normal - transiciones validas
+(transicion 'en-rojo 'amarillo-intermitente)
+;; Resultado esperado: (EN-ROJO "cambiar-a-amarillo-intermitente")
 
-(transicion 'en-verde 'amarillo)
-;; Resultado esperado: (EN-VERDE "cambiar-a-amarillo")
+(transicion 'en-amarillo-intermitente 'verde)
+;; Resultado esperado: (EN-AMARILLO-INTERMITENTE "cambiar-a-verde")
 
-(transicion 'en-amarillo 'rojo)
-;; Resultado esperado: (EN-AMARILLO "cambiar-a-rojo")
+(transicion 'en-verde 'amarillo-intermitente)
+;; Resultado esperado: (EN-VERDE "cambiar-a-amarillo-intermitente")
 
-;; Camino alternativo - transiciones inválidas
-(transicion 'en-rojo 'amarillo)
-;; Resultado esperado: (EN-ROJO ACCION-POR-DEFECTO)
+(transicion 'en-amarillo-intermitente 'amarillo)
+;; Resultado esperado: (EN-AMARILLO-INTERMITENTE "cambiar-a-amarillo")
 
-(transicion 'en-verde 'rojo)
-;; Resultado esperado: (EN-VERDE ACCION-POR-DEFECTO)
+(transicion 'en-amarillo 'amarillo-intermitente)
+;; Resultado esperado: (EN-AMARILLO "cambiar-a-amarillo-intermitente")
 
-;; Caso de error - estado inexistente
-(transicion 'en-azul 'verde)
-;; Resultado esperado: (EN-AZUL ACCION-POR-DEFECTO)
+(transicion 'en-amarillo-intermitente 'rojo)
+;; Resultado esperado: (EN-AMARILLO-INTERMITENTE "cambiar-a-rojo")
 
 ;; ========================================================
 ;; REQUERIMIENTO 2 - timer
